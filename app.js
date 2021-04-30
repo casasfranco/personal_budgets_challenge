@@ -1,17 +1,11 @@
 import express from "express";
-import mysql from "mysql";
 import cors from "cors";
 import morgan from "morgan";
+require('dotenv/config.js');
+import { connect } from "./connectionMysql.js";
 
 const PORT = process.env.PORT || 4000;
 const app = express();
-
-const connection = mysql.createConnection({
-  host:  process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-});
 
 app.use(cors());
 app.options("*", cors());
@@ -23,10 +17,8 @@ app.use(morgan("tiny"));
 //Routes
 
 //database
-connection.connect((error) => {
-  if (error) throw error;
-  else console.log("Database server running!");
-});
+connect();
+
 
 //server
 app.listen(PORT, () => console.log(`Server runing on port ${PORT}`));
